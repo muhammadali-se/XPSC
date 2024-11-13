@@ -3,50 +3,41 @@ using namespace std;
 #define nl '\n'
 
 void solution() {
-    int t;
-    cin >> t;
-    while (t--) {
-        int n;
-        cin >> n;
-        map<int, int> cnt;
-
-        for (int i = 1;i <= n;i++) {
-            int x;
-            cin >> x;
-            cnt[x]++;
+    int q, customerNo = 1;
+    cin >> q;
+    set<pair<int, int>> s;
+    multiset<pair<int, int>> ms;
+    vector<int> ans;
+    
+    for (int i = 1; i <= q; i++) {
+        int type;
+        cin >> type;
+        
+        if (type == 1) {
+            int money;
+            cin >> money;
+            s.insert({customerNo, money});
+            ms.insert({money, -customerNo});
+            customerNo++; 
+        } else if (type == 2) {
+            int pos = s.begin()->first, money = s.begin()->second;
+            ans.push_back(pos);
+            s.erase(s.begin());
+            ms.erase({money, -pos});
+        } else {
+            int pos = -ms.rbegin()->second, money = ms.rbegin()->first;
+            ans.push_back(pos);
+            ms.erase(--ms.end());
+            s.erase({pos, money});
         }
-
-        priority_queue<int> pq;
-        for (auto [x, y] : cnt) pq.push(y);
-
-        while (!pq.empty()) {
-            if (pq.size() < 2) break;
-
-            int x, y;
-            x = pq.top();
-            pq.pop();
-            y = pq.top();
-            pq.pop();
-            x--;
-            y--;
-
-            if (x >= 1) pq.push(x);
-            if (y >= 1) pq.push(y);
-        }
-
-        int ans = 0;
-        while (!pq.empty()) {
-            ans += pq.top();
-            pq.pop();
-        }
-
-        cout << ans << '\n';
     }
+    
+    for (int val: ans) cout << val << ' ';
 }
 
 int main() {
-	ios::sync_with_stdio(false);
-	cin.tie(NULL);
-	solution();
-	return 0;
+    ios::sync_with_stdio(false);
+    cin.tie(NULL);
+    solution();
+    return 0;
 }
