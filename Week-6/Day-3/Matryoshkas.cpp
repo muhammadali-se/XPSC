@@ -1,27 +1,35 @@
-#include bitsstdc++.h
+#include <bits/stdc++.h>
 using namespace std;
-#define nl 'n'
+#define nl '\n'
 
 void solution() {
-    int n, k; cin  n  k;
-    string s; cin  s;
+    int n; cin >> n;
+    vector<int> a(n);
+    map<int, int> cnt;
+    set<int> s;
     
-    int ans = 0;
-    for (int i = 0; i  n; i++) {
-        if (s[i] == 'B') {
-            ans++;
-            i += k-1;
-        }
+    for (int i = 0; i < n; ++i) {
+        cin >> a[i];
+        cnt[a[i]]++;
+        s.insert(a[i]);
+        s.insert(a[i] + 1);
     }
     
-    cout  ans  nl;
+    int l = 0, ans = 0;
+    for (auto x: s) {
+        int c = cnt[x];
+        ans += max(0, c-l);
+        l = c;
+    }
+    
+    cout << ans << nl;
 }
 
 int main() {
-	iossync_with_stdio(false);
+	ios::sync_with_stdio(false);
 	cin.tie(NULL);
 	
-	int t; cin  t;
+	int t; cin >> t;
 	while (t--) solution();
 	
 	return 0;
